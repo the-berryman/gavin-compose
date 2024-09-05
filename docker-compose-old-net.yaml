@@ -1,0 +1,63 @@
+version: '3'
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./app:/var/www/html
+    networks:
+      app-network:
+        ipv4_address: 10.2.2.5
+    depends_on:
+      - php-fpm
+
+  php-fpm:
+    image: php:7.4-fpm
+    container_name: php-fpm
+    volumes:
+      - ./app:/var/www/html
+    networks:
+      app-network:
+        ipv4_address: 10.2.2.4
+
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_USER: app_user
+      MYSQL_PASSWORD: app_password
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      app-network:
+        ipv4_address: 10.2.2.3
+    ports:
+      - "3306:3306"
+
+  load-balancer:
+    image: nginx:latest
+    container_name: load_balancer
+    ports:
+      - "8080:80"
+    volumes: 
+      - ./nginx/load_balancer.conf:/etc/nginx.conf
+    networks:
+      app-network:
+        ipv4_address: 10.2.2.2
+    depends_on:
+      - nginx
+
+networks:
+  app-network:
+    ipam:
+       driver: default
+       config:
+         - subnet: "10.2.2.0/24"
+
+volumes:
+  mysql-data:
+    driver: local
