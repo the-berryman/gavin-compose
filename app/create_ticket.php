@@ -1,6 +1,13 @@
 <?php
 require 'db_connection.php';
 
+session_start();
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
 // Fetch partners with status 1 (active)
 $stmt = $pdo->query("SELECT partner_id, partner_name FROM partners WHERE status = 1");
 $partners = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -66,6 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <ul class="flex space-x-4">
                 <li><a href="index.php" class="hover:text-secondary">Home</a></li>
                 <li><a href="tickets.php" class="hover:text-secondary">Tickets</a></li>
+                <li><a href="logout.php" class="hover:text-secondary">Logout</a></li>
             </ul>
         </div>
     </nav>
@@ -113,15 +121,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         const label = checkbox.nextElementSibling;
     // Set opacity based on the initial checked state
         if (!checkbox.checked) {
-            label.classList.add('opacity-50');
+            label.classList.add('opacity-20');
             }
 
     // Add event listener to update opacity on change
         checkbox.addEventListener('change', function() {
             if (this.checked) {
-                label.classList.remove('opacity-50');
+                label.classList.remove('opacity-20');
             } else {
-                label.classList.add('opacity-50');
+                label.classList.add('opacity-20');
                 }
             });
         });

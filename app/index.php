@@ -2,34 +2,13 @@
 // Include the connection and fetching logic
 require 'db_connection.php';
 require 'fetch_tickets.php';
-?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <title>Ticket Listings</title>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#131C41',
-                        secondary: '#A5B2E2',
-                        accent: '#906AE2',
-                        background: '#F0F1F7',
-                        text: '#333335',
-                    }
-                }
-            }
-        }
-    </script>
-</head>
-<body class="bg-background text-text"><?php
-// Include the connection and fetching logic
-require 'db_connection.php';
-require 'fetch_tickets.php';
+
+session_start();
+
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -66,6 +45,7 @@ require 'fetch_tickets.php';
             <ul class="flex space-x-4">
                 <li><a href="index.php" class="hover:text-secondary">Home</a></li>
                 <li><a href="tickets.php" class="hover:text-secondary">Tickets</a></li>
+                <li><a href="logout.php" class="hover:text-secondary">Logout</a></li>
             </ul>
         </div>
     </nav>
@@ -87,7 +67,7 @@ require 'fetch_tickets.php';
                         <p class="text-gray-700 text-lg mt-2"><?= htmlspecialchars($ticket['description']) ?></p>
                         <ul class="mt-4">
                             <li class="mb-2">
-                                <strong>Location:</strong> <?= htmlspecialchars($ticket['location']) ?>
+                                <strong>Partner:</strong> <?= htmlspecialchars($ticket['location']) ?>
                                 <span class="text-xs text-white rounded-full px-2 py-1 ml-2 <?= $ticket['location'] === 'Iovox Internal' ? 'bg-accent' : 'bg-secondary' ?>">
                                     <?= $ticket['location'] === 'Iovox Internal' ? 'Internal' : 'External' ?>
                                 </span>
