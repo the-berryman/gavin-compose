@@ -1,0 +1,7 @@
+input[type="checkbox"] {
+    display: none;
+}
+
+label.tag.inactive {
+    opacity: 0.5;
+}

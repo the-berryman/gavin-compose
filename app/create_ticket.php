@@ -40,6 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
     <title>Create Ticket</title>
     <script>
         tailwind.config = {
@@ -107,14 +108,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </form>
     </div>
     <script>
-        // JavaScript for interactive tag selection
-        document.querySelectorAll('input[name="tags[]"]').forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
-                const label = this.nextElementSibling;
-                if (this.checked) {
-                    label.classList.remove('opacity-50');
-                } else {
-                    label.classList.add('opacity-50');
+    document.querySelectorAll('input[name="tags[]"]').forEach(checkbox => {
+        const label = checkbox.nextElementSibling;
+    // Set opacity based on the initial checked state
+        if (!checkbox.checked) {
+            label.classList.add('opacity-50');
+            }
+
+    // Add event listener to update opacity on change
+        checkbox.addEventListener('change', function() {
+            if (this.checked) {
+                label.classList.remove('opacity-50');
+            } else {
+                label.classList.add('opacity-50');
                 }
             });
         });
