@@ -12,9 +12,7 @@ services:
       - php-fpm
 
   php-fpm:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: php:7.4-fpm
     container_name: php-fpm
     volumes:
       - ./app:/var/www/html
