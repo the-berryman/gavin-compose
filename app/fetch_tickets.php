@@ -12,11 +12,11 @@ $sql = "
     LEFT JOIN 
         partners p ON t.partner_id = p.partner_id
     LEFT JOIN 
-        ticket_tags tt ON t.ticket_id = tt.ticket_id
+        ticket_tags tt ON t.ticket_id = tt.ticket_id and tt.status = 1
     LEFT JOIN 
-        tags tg ON tt.tag_id = tg.tag_id
+        tags tg ON tt.tag_id = tg.tag_id and tg.status = 1
     WHERE 
-        t.status = 1 AND p.status = 1 AND tg.status = 1 AND tt.status = 1
+        t.status = 1 AND p.status = 1 
     GROUP BY 
         t.ticket_id
 ";
