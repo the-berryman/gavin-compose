@@ -2,7 +2,6 @@
 // fetch_tickets.php
 require 'db_connection.php';
 
-
 // Fetch tickets and associated tags with colors
 $sql = "
     SELECT 
@@ -16,6 +15,8 @@ $sql = "
         ticket_tags tt ON t.ticket_id = tt.ticket_id
     LEFT JOIN 
         tags tg ON tt.tag_id = tg.tag_id
+    WHERE 
+        t.status = 1 AND p.status = 1 AND tg.status = 1 AND tt.status = 1
     GROUP BY 
         t.ticket_id
 ";

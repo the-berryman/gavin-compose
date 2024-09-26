@@ -1,12 +1,12 @@
 <?php
 require 'db_connection.php';
 
-// Fetch partners
-$stmt = $pdo->query("SELECT partner_id, partner_name FROM partners");
+// Fetch partners with status 1 (active)
+$stmt = $pdo->query("SELECT partner_id, partner_name FROM partners WHERE status = 1");
 $partners = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Fetch tags
-$stmt = $pdo->query("SELECT tag_id, tag_name, tag_color FROM tags");
+// Fetch tags with status 1 (active)
+$stmt = $pdo->query("SELECT tag_id, tag_name, tag_color FROM tags WHERE status = 1");
 $tags = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -16,14 +16,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $partner_id = $_POST['partner_id'];
     $selected_tags = $_POST['tags'] ?? [];
 
-    // Insert ticket
-    $stmt = $pdo->prepare("INSERT INTO tickets (title, description, partner_id) VALUES (?, ?, ?)");
+    // Insert ticket with default status 1
+    $stmt = $pdo->prepare("INSERT INTO tickets (title, description, partner_id, status) VALUES (?, ?, ?, 1)");
     $stmt->execute([$title, $description, $partner_id]);
     $ticket_id = $pdo->lastInsertId();
 
-    // Insert ticket tags
+    // Insert ticket tags with default status 1
     if (!empty($selected_tags)) {
-        $stmt = $pdo->prepare("INSERT INTO ticket_tags (ticket_id, tag_id) VALUES (?, ?)");
+        $stmt = $pdo->prepare("INSERT INTO ticket_tags (ticket_id, tag_id, status) VALUES (?, ?, 1)");
         foreach ($selected_tags as $tag_id) {
             $stmt->execute([$ticket_id, $tag_id]);
         }
@@ -34,6 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

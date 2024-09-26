@@ -93,18 +93,16 @@ require 'fetch_tickets.php';
                                 </span>
                             </li>
                             <?php if (!empty($ticket['tags'])) : ?>
-                                <li class="mb-2">
-                                    <strong>Tags:</strong>
-                                    <?php
-                                    $tags = explode(',', $ticket['tags']);
-                                    $tagColors = ['#845ADF', '#26BF94', '#23B7E5', '#F5B849', '#FA8231', '#C0392B', '#EB4493', '#386706', '#A5B1C2', '#4B6584'];
-                                    foreach ($tags as $tagIndex => $tag) {
-                                        list($tagName, $tagColor) = explode('|', $tag);
-                                        $newColor = $tagColors[$tagIndex % count($tagColors)];
-                                        echo "<span class='inline-block text-xs text-white rounded-full px-2 py-1 ml-2' style='background-color: $newColor;'>" . htmlspecialchars($tagName) . "</span>";
+                              <li class="mb-2">
+                                <strong>Tags:</strong>
+                                <?php
+                                  $tags = explode(',', $ticket['tags']);
+                                    foreach ($tags as $tag) {
+                                      list($tagName, $tagColor) = explode('|', $tag);
+                                        echo "<span class='inline-block text-xs text-white rounded-full px-2 py-1 ml-2' style='background-color: " . htmlspecialchars($tagColor) . ";'>" . htmlspecialchars($tagName) . "</span>";
                                     }
-                                    ?>
-                                </li>
+                                ?>
+                              </li>
                             <?php endif; ?>
                         </ul>
                     </div>
