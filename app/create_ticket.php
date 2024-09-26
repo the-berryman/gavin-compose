@@ -22,10 +22,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $description = $_POST['description'];
     $partner_id = $_POST['partner_id'];
     $selected_tags = $_POST['tags'] ?? [];
+    $created_by = $_SESSION['user_id']; // Get the user_id of the logged-in user
 
-    // Insert ticket with default status 1
-    $stmt = $pdo->prepare("INSERT INTO tickets (title, description, partner_id, status) VALUES (?, ?, ?, 1)");
-    $stmt->execute([$title, $description, $partner_id]);
+    // Insert ticket with default status 1 and the created_by user
+    $stmt = $pdo->prepare("INSERT INTO tickets (title, description, partner_id, status, created_by) VALUES (?, ?, ?, 1, ?)");
+    $stmt->execute([$title, $description, $partner_id, $created_by]);
     $ticket_id = $pdo->lastInsertId();
 
     // Insert ticket tags with default status 1
